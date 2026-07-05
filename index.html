@@ -109,6 +109,103 @@
     border-radius: 50%;
     box-shadow: 0 0 20px #00ff00;
   }
+
+  #settings-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 10px 20px;
+    font-size: 18px;
+    background: black;
+    border: 2px solid #00ff00;
+    color: #00ff00;
+    cursor: pointer;
+  }
+
+  #settings-menu {
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    width: 260px;
+    background: rgba(0, 20, 0, 0.95);
+    border: 2px solid #00ff00;
+    padding: 10px;
+    display: none;
+    color: #00ff00;
+    font-size: 14px;
+  }
+
+  #settings-menu h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+
+  .settings-section {
+    margin-bottom: 10px;
+    border-top: 1px solid #004400;
+    padding-top: 6px;
+  }
+
+  .settings-btn {
+    display: block;
+    width: 100%;
+    margin: 3px 0;
+    padding: 5px;
+    background: black;
+    border: 1px solid #00ff00;
+    color: #00ff00;
+    cursor: pointer;
+    text-align: left;
+    font-size: 13px;
+  }
+
+  #name-input {
+    position: absolute;
+    top: 40px;
+    left: 10px;
+    padding: 5px;
+    font-size: 14px;
+    background: black;
+    border: 1px solid #00ff00;
+    color: #00ff00;
+  }
+
+  #player-name-label {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    font-size: 14px;
+  }
+
+  #code-input {
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    padding: 5px;
+    font-size: 14px;
+    background: black;
+    border: 1px solid #00ff00;
+    color: #00ff00;
+  }
+
+  #code-label {
+    position: absolute;
+    top: 0px;
+    right: 10px;
+    font-size: 14px;
+  }
+
+  #lobby {
+    position: absolute;
+    bottom: 60px;
+    left: 10px;
+    padding: 10px;
+    background: rgba(0, 20, 0, 0.9);
+    border: 1px solid #00ff00;
+    color: #00ff00;
+    font-size: 14px;
+    display: none;
+  }
 </style>
 </head>
 
@@ -130,6 +227,39 @@
 
 <div id="bowl"></div>
 
+<div id="player-name-label">Name:</div>
+<input id="name-input" type="text" placeholder="Enter your name">
+
+<div id="code-label">Enter code:</div>
+<input id="code-input" type="text" placeholder="Game code">
+
+<button id="settings-btn">SETTINGS / MULTIPLAYER</button>
+<div id="settings-menu">
+  <h3>Background Themes</h3>
+  <div class="settings-section" id="bg-section">
+    <button class="settings-btn" data-bg="green">Cyber Green</button>
+    <button class="settings-btn" data-bg="blue">Cyber Blue</button>
+    <button class="settings-btn" data-bg="purple">Cyber Purple</button>
+    <button class="settings-btn" data-bg="red">Danger Red</button>
+    <button class="settings-btn" data-bg="matrix">Matrix</button>
+    <button class="settings-btn" data-bg="rainbow">Rainbow</button>
+  </div>
+
+  <h3>Multiplayer</h3>
+  <div class="settings-section" id="mp-section">
+    <button class="settings-btn" id="local-mp-btn">Local Multiplayer</button>
+    <button class="settings-btn" id="online-host-btn">Online: Host Game</button>
+    <button class="settings-btn" id="online-join-btn">Online: Join Game</button>
+    <button class="settings-btn" id="online-match-btn">Online: Play Random</button>
+  </div>
+</div>
+
+<div id="lobby">
+  <div><strong>Lobby</strong></div>
+  <div id="lobby-info"></div>
+  <button id="lobby-start-btn">Start Game (Host)</button>
+</div>
+
 <script>
 let score = 0;
 let highScore = localStorage.getItem("catHighScore") || 0;
@@ -137,6 +267,29 @@ let gameRunning = false;
 let bowlSize = 1;
 let bowl = document.getElementById("bowl");
 let spawnInterval;
+let currentBg = "green";
+let playerName = "";
+let gameCode = "";
+let isHost = false;
+
+function applyBackground(theme) {
+  currentBg = theme;
+  if (theme === "green") {
+    document.body.style.background = "radial-gradient(circle, #001100, #000000)";
+  } else if (theme === "blue") {
+    document.body.style.background = "radial-gradient(circle, #001133, #000011)";
+  } else if (theme === "purple") {
+    document.body.style.background = "radial-gradient(circle, #220022, #000000)";
+  } else if (theme === "red") {
+    document.body.style.background = "radial-gradient(circle, #330000, #000000)";
+  } else if (theme === "matrix") {
+    document.body.style.background = "radial-gradient(circle, #001900, #000000)";
+  } else if (theme === "rainbow") {
+    document.body.style.background = "radial-gradient(circle, #330033, #000000)";
+  }
+}
+
+applyBackground("green");
 
 function resetBowl() {
   bowlSize = 1;
@@ -341,6 +494,74 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft") bowl.style.left = (left - 20) + "px";
   if (e.key === "ArrowRight") bowl.style.left = (left + 20) + "px";
 });
+
+/* SETTINGS / MULTIPLAYER UI */
+
+document.getElementById("settings-btn").onclick = () => {
+  const menu = document.getElementById("settings-menu");
+  menu.style.display = (menu.style.display === "none" || menu.style.display === "") ? "block" : "none";
+};
+
+document.querySelectorAll("#bg-section .settings-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const theme = btn.getAttribute("data-bg");
+    applyBackground(theme);
+  });
+});
+
+document.getElementById("name-input").addEventListener("input", (e) => {
+  playerName = e.target.value;
+});
+
+document.getElementById("code-input").addEventListener("input", (e) => {
+  gameCode = e.target.value;
+});
+
+document.getElementById("local-mp-btn").onclick = () => {
+  alert("Local multiplayer: second player uses arrow keys. (Full local mode can be added next.)");
+};
+
+document.getElementById("online-host-btn").onclick = () => {
+  if (!playerName) {
+    alert("Enter your name first (top left).");
+    return;
+  }
+  isHost = true;
+  const lobby = document.getElementById("lobby");
+  lobby.style.display = "block";
+  document.getElementById("lobby-info").textContent =
+    "Host: " + playerName + "\nGame code: (Firebase code will go here)";
+};
+
+document.getElementById("online-join-btn").onclick = () => {
+  if (!playerName) {
+    alert("Enter your name first (top left).");
+    return;
+  }
+  if (!gameCode) {
+    alert("Enter a game code (top right).");
+    return;
+  }
+  alert("Joining game with code: " + gameCode + " (Firebase join logic will go here).");
+};
+
+document.getElementById("online-match-btn").onclick = () => {
+  if (!playerName) {
+    alert("Enter your name first (top left).");
+    return;
+  }
+  alert("Searching for random online match... (Firebase matchmaking will go here).");
+};
+
+document.getElementById("lobby-start-btn").onclick = () => {
+  if (!isHost) {
+    alert("Only the host can start the game.");
+    return;
+  }
+  alert("Starting multiplayer game... (Firebase start logic will go here).");
+  document.getElementById("lobby").style.display = "none";
+  startGame();
+};
 </script>
 
 </body>
