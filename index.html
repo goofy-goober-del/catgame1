@@ -90,8 +90,24 @@
   .cat {
     position: absolute;
     font-size: 40px;
-    cursor: pointer;
     user-select: none;
+  }
+
+  .boost, .shrink {
+    position: absolute;
+    font-size: 30px;
+    font-weight: bold;
+    user-select: none;
+  }
+
+  #bowl {
+    position: absolute;
+    bottom: 20px;
+    width: 80px;
+    height: 30px;
+    background: #00ff00;
+    border-radius: 50%;
+    box-shadow: 0 0 20px #00ff00;
   }
 </style>
 </head>
@@ -112,10 +128,27 @@
   <button id="restart-btn">RESTART</button>
 </div>
 
+<div id="bowl"></div>
+
 <script>
 let score = 0;
 let highScore = localStorage.getItem("catHighScore") || 0;
 let gameRunning = false;
+let bowlSize = 1;
+let bowl = document.getElementById("bowl");
+let spawnInterval;
+
+function resetBowl() {
+  bowlSize = 1;
+  updateBowlSize();
+  bowl.style.left = (window.innerWidth / 2 - 40) + "px";
+}
+
+function updateBowlSize() {
+  if (bowlSize === 1) bowl.style.width = "80px";
+  if (bowlSize === 2) bowl.style.width = "140px";
+  if (bowlSize === 3) bowl.style.width = "200px";
+}
 
 function spawnCat() {
   if (!gameRunning) return;
@@ -129,7 +162,7 @@ function spawnCat() {
 
   document.body.appendChild(cat);
 
-  let fallSpeed = 2 + Math.random() * 3;
+  let fallSpeed = 1.5 + Math.random() * 2;
 
   function fall() {
     if (!gameRunning) return;
@@ -137,6 +170,20 @@ function spawnCat() {
     let y = parseFloat(cat.style.top);
     y += fallSpeed;
     cat.style.top = y + "px";
+
+    let bowlRect = bowl.getBoundingClientRect();
+    let catRect = cat.getBoundingClientRect();
+
+    if (
+      catRect.bottom >= bowlRect.top &&
+      catRect.left < bowlRect.right &&
+      catRect.right > bowlRect.left
+    ) {
+      score++;
+      document.getElementById("score").textContent = "Score: " + score;
+      cat.remove();
+      return;
+    }
 
     if (y > window.innerHeight - 50) {
       endGame();
@@ -147,11 +194,97 @@ function spawnCat() {
     requestAnimationFrame(fall);
   }
 
-  cat.onclick = () => {
-    score++;
-    document.getElementById("score").textContent = "Score: " + score;
-    cat.remove();
-  };
+  fall();
+}
+
+function spawnBoost() {
+  if (!gameRunning) return;
+
+  const boost = document.createElement("div");
+  boost.className = "boost";
+  boost.textContent = "🟢";
+
+  boost.style.left = Math.random() * (window.innerWidth - 50) + "px";
+  boost.style.top = "-50px";
+
+  document.body.appendChild(boost);
+
+  let fallSpeed = 2;
+
+  function fall() {
+    if (!gameRunning) return;
+
+    let y = parseFloat(boost.style.top);
+    y += fallSpeed;
+    boost.style.top = y + "px";
+
+    let bowlRect = bowl.getBoundingClientRect();
+    let boostRect = boost.getBoundingClientRect();
+
+    if (
+      boostRect.bottom >= bowlRect.top &&
+      boostRect.left < bowlRect.right &&
+      boostRect.right > bowlRect.left
+    ) {
+      if (bowlSize < 3) bowlSize++;
+      updateBowlSize();
+      boost.remove();
+      return;
+    }
+
+    if (y > window.innerHeight - 50) {
+      boost.remove();
+      return;
+    }
+
+    requestAnimationFrame(fall);
+  }
+
+  fall();
+}
+
+function spawnShrink() {
+  if (!gameRunning) return;
+
+  const shrink = document.createElement("div");
+  shrink.className = "shrink";
+  shrink.textContent = "🔴";
+
+  shrink.style.left = Math.random() * (window.innerWidth - 50) + "px";
+  shrink.style.top = "-50px";
+
+  document.body.appendChild(shrink);
+
+  let fallSpeed = 2;
+
+  function fall() {
+    if (!gameRunning) return;
+
+    let y = parseFloat(shrink.style.top);
+    y += fallSpeed;
+    shrink.style.top = y + "px";
+
+    let bowlRect = bowl.getBoundingClientRect();
+    let shrinkRect = shrink.getBoundingClientRect();
+
+    if (
+      shrinkRect.bottom >= bowlRect.top &&
+      shrinkRect.left < bowlRect.right &&
+      shrinkRect.right > bowlRect.left
+    ) {
+      if (bowlSize > 1) bowlSize--;
+      updateBowlSize();
+      shrink.remove();
+      return;
+    }
+
+    if (y > window.innerHeight - 50) {
+      shrink.remove();
+      return;
+    }
+
+    requestAnimationFrame(fall);
+  }
 
   fall();
 }
@@ -163,11 +296,20 @@ function startGame() {
   document.getElementById("start-screen").style.display = "none";
   document.getElementById("game-over").style.display = "none";
 
-  setInterval(spawnCat, 700);
+  resetBowl();
+
+  spawnInterval = setInterval(() => {
+    spawnCat();
+    if (Math.random() < 0.3) spawnBoost();
+    if (Math.random() < 0.2) spawnShrink();
+  }, 900);
 }
 
 function endGame() {
   gameRunning = false;
+  clearInterval(spawnInterval);
+
+  document.querySelectorAll(".cat, .boost, .shrink").forEach(e => e.remove());
 
   if (score > highScore) {
     highScore = score;
@@ -184,6 +326,21 @@ document.getElementById("restart-btn").onclick = () => {
   document.getElementById("start-screen").style.display = "flex";
   document.getElementById("game-over").style.display = "none";
 };
+
+document.addEventListener("mousemove", (e) => {
+  bowl.style.left = (e.clientX - bowl.offsetWidth / 2) + "px";
+});
+
+document.addEventListener("touchmove", (e) => {
+  let x = e.touches[0].clientX;
+  bowl.style.left = (x - bowl.offsetWidth / 2) + "px";
+});
+
+document.addEventListener("keydown", (e) => {
+  let left = parseFloat(bowl.style.left);
+  if (e.key === "ArrowLeft") bowl.style.left = (left - 20) + "px";
+  if (e.key === "ArrowRight") bowl.style.left = (left + 20) + "px";
+});
 </script>
 
 </body>
