@@ -1,249 +1,493 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Cat Presser</title>
+  <meta charset="UTF-8">
+  <title>Cat Presser</title>
 
-<style>
-  body {
-    margin: 0;
-    overflow: hidden;
-    background: radial-gradient(circle, #001100, #000000);
-    font-family: 'Courier New', monospace;
-    color: #00ff00;
-  }
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: radial-gradient(circle, #001100, #000000);
+      font-family: 'Courier New', monospace;
+      color: #00ff00;
+    }
 
-  #start-screen {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 20, 0, 0.9);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  }
+    #start-screen {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 20, 0, 0.9);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      z-index: 10;
+    }
 
-  #title {
-    font-size: 60px;
-    font-weight: bold;
-    color: #00ff00;
-    text-shadow: 0 0 20px #00ff00;
-    margin-bottom: 40px;
-  }
+    #title {
+      font-size: 60px;
+      font-weight: bold;
+      color: #00ff00;
+      text-shadow: 0 0 20px #00ff00;
+      margin-bottom: 40px;
+    }
 
-  #play-btn {
-    padding: 20px 40px;
-    font-size: 30px;
-    background: black;
-    border: 3px solid #00ff00;
-    color: #00ff00;
-    cursor: pointer;
-    text-shadow: 0 0 10px #00ff00;
-  }
+    #play-btn {
+      padding: 20px 40px;
+      font-size: 30px;
+      background: black;
+      border: 3px solid #00ff00;
+      color: #00ff00;
+      cursor: pointer;
+      text-shadow: 0 0 10px #00ff00;
+    }
 
-  #play-btn:hover {
-    background: #003300;
-  }
+    #play-btn:hover {
+      background: #003300;
+    }
 
-  #score {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    font-size: 30px;
-    color: #00ff00;
-    text-shadow: 0 0 10px #00ff00;
-  }
+    #score {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 30px;
+      color: #00ff00;
+      text-shadow: 0 0 10px #00ff00;
+      z-index: 5;
+    }
 
-  #settings-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 10px 20px;
-    font-size: 18px;
-    background: black;
-    border: 2px solid #00ff00;
-    color: #00ff00;
-    cursor: pointer;
-  }
+    #settings-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 10px 20px;
+      font-size: 18px;
+      background: black;
+      border: 2px solid #00ff00;
+      color: #00ff00;
+      cursor: pointer;
+      z-index: 5;
+    }
 
-  #settings-menu {
-    position: absolute;
-    top: 60px;
-    right: 10px;
-    width: 260px;
-    background: rgba(0, 20, 0, 0.95);
-    border: 2px solid #00ff00;
-    padding: 10px;
-    display: none;
-    color: #00ff00;
-    font-size: 14px;
-  }
+    #settings-btn:hover {
+      background: #003300;
+    }
 
-  .settings-btn {
-    display: block;
-    width: 100%;
-    margin: 3px 0;
-    padding: 5px;
-    background: black;
-    border: 1px solid #00ff00;
-    color: #00ff00;
-    cursor: pointer;
-    text-align: left;
-    font-size: 13px;
-  }
+    #settings-menu {
+      position: absolute;
+      top: 60px;
+      right: 10px;
+      width: 260px;
+      background: rgba(0, 20, 0, 0.95);
+      border: 2px solid #00ff00;
+      padding: 10px;
+      display: none;
+      color: #00ff00;
+      font-size: 14px;
+      z-index: 6;
+    }
 
-  #game-over {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 20, 0, 0.95);
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: #00ff00;
-    text-shadow: 0 0 10px #00ff00;
-  }
+    .settings-btn {
+      display: block;
+      width: 100%;
+      margin: 3px 0;
+      padding: 5px;
+      background: black;
+      border: 1px solid #00ff00;
+      color: #00ff00;
+      cursor: pointer;
+      text-align: left;
+      font-size: 13px;
+    }
 
-  #game-over h1 {
-    font-size: 50px;
-  }
+    .settings-btn:hover {
+      background: #003300;
+    }
 
-  #restart-btn {
-    margin-top: 30px;
-    padding: 20px 40px;
-    font-size: 30px;
-    background: black;
-    border: 3px solid #00ff00;
-    color: #00ff00;
-    cursor: pointer;
-  }
+    #game-over {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 20, 0, 0.95);
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #00ff00;
+      text-shadow: 0 0 10px #00ff00;
+      z-index: 20;
+    }
 
-  #restart-btn:hover {
-    background: #003300;
-  }
+    #game-over h1 {
+      font-size: 50px;
+      margin-bottom: 20px;
+    }
 
-  .cat {
-    position: absolute;
-    font-size: 40px;
-    user-select: none;
-  }
+    #restart-btn {
+      margin-top: 30px;
+      padding: 20px 40px;
+      font-size: 30px;
+      background: black;
+      border: 3px solid #00ff00;
+      color: #00ff00;
+      cursor: pointer;
+    }
 
-  .boost, .shrink {
-    position: absolute;
-    font-size: 30px;
-    font-weight: bold;
-    user-select: none;
-  }
+    #restart-btn:hover {
+      background: #003300;
+    }
 
-  #bowl {
-    position: absolute;
-    bottom: 20px;
-    width: 80px;
-    height: 30px;
-    background: #00ff00;
-    border-radius: 50%;
-    box-shadow: 0 0 20px #00ff00;
-  }
-</style>
+    .cat {
+      position: absolute;
+      font-size: 40px;
+      user-select: none;
+      text-shadow: 0 0 10px #ffffff;
+    }
+
+    .boost, .shrink {
+      position: absolute;
+      font-size: 30px;
+      font-weight: bold;
+      user-select: none;
+      text-shadow: 0 0 10px #ffffff;
+    }
+
+    #bowl {
+      position: absolute;
+      bottom: 20px;
+      width: 80px;
+      height: 30px;
+      background: #00ff00;
+      border-radius: 50%;
+      box-shadow: 0 0 20px #00ff00;
+    }
+  </style>
 </head>
 
 <body>
+  <div id="start-screen">
+    <div id="title">CAT PRESSER</div>
+    <button id="play-btn">PLAY</button>
+  </div>
 
-<div id="start-screen">
-  <div id="title">CAT PRESSER</div>
-  <button id="play-btn">PLAY</button>
-</div>
+  <div id="score">Score: 0</div>
 
-<div id="score">Score: 0</div>
+  <button id="settings-btn">SETTINGS</button>
 
-<button id="settings-btn">SETTINGS</button>
+  <div id="settings-menu">
+    <h3>Background Themes</h3>
+    <button class="settings-btn" data-bg="green">Cyber Green</button>
+    <button class="settings-btn" data-bg="blue">Cyber Blue</button>
+    <button class="settings-btn" data-bg="purple">Cyber Purple</button>
+    <button class="settings-btn" data-bg="red">Danger Red</button>
+    <button class="settings-btn" data-bg="matrix">Matrix</button>
+    <button class="settings-btn" data-bg="rainbow">Rainbow</button>
 
-<div id="settings-menu">
-  <h3>Background Themes</h3>
-  <button class="settings-btn" data-bg="green">Cyber Green</button>
-  <button class="settings-btn" data-bg="blue">Cyber Blue</button>
-  <button class="settings-btn" data-bg="purple">Cyber Purple</button>
-  <button class="settings-btn" data-bg="red">Danger Red</button>
-  <button class="settings-btn" data-bg="matrix">Matrix</button>
-  <button class="settings-btn" data-bg="rainbow">Rainbow</button>
+    <h3>Multiplayer (coming soon)</h3>
+    <button class="settings-btn" id="local-mp-btn">Local Multiplayer</button>
+    <button class="settings-btn" id="online-mp-btn">Online Multiplayer</button>
+  </div>
 
-  <h3>Multiplayer</h3>
-  <button class="settings-btn">Local Multiplayer</button>
-  <button class="settings-btn">Online Multiplayer</button>
-</div>
+  <div id="game-over">
+    <h1>GAME OVER</h1>
+    <h2 id="final-score"></h2>
+    <h2 id="high-score"></h2>
+    <button id="restart-btn">RESTART</button>
+  </div>
 
-<div id="game-over">
-  <h1>GAME OVER</h1>
-  <h2 id="final-score"></h2>
-  <h2 id="high-score"></h2>
-  <button id="restart-btn">RESTART</button>
-</div>
+  <div id="bowl"></div>
 
-<div id="bowl"></div>
+  <!-- Firebase SDK (module script) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+    // Multiplayer will later use database/auth imports here
 
-<script>
-let score = 0;
-let highScore = localStorage.getItem("catHighScore") || 0;
-let gameRunning = false;
-let bowlSize = 1;
-let bowl = document.getElementById("bowl");
-let spawnInterval;
+    const firebaseConfig = {
+      apiKey: "AIzaSyC90OhtETkuWvqmD7DfadfwJmI5F1jryk",
+      authDomain: "catgame1-multiplayer.firebaseapp.com",
+      projectId: "catgame1-multiplayer",
+      storageBucket: "catgame1-multiplayer.firebasestorage.app",
+      messagingSenderId: "1043871355136",
+      appId: "1:1043871355136:web:7ffad0cd4b007d3a2c63e5"
+    };
 
-/* BACKGROUND CHANGER */
-function applyBackground(theme) {
-  if (theme === "green") {
-    document.body.style.background = "radial-gradient(circle, #001100, #000000)";
-  } else if (theme === "blue") {
-    document.body.style.background = "radial-gradient(circle, #001133, #000011)";
-  } else if (theme === "purple") {
-    document.body.style.background = "radial-gradient(circle, #220022, #000000)";
-  } else if (theme === "red") {
-    document.body.style.background = "radial-gradient(circle, #330000, #000000)";
-  } else if (theme === "matrix") {
-    document.body.style.background = "radial-gradient(circle, #001900, #000000)";
-  } else if (theme === "rainbow") {
-    document.body.style.background = "radial-gradient(circle, #330033, #000000)";
-  }
-}
+    const app = initializeApp(firebaseConfig);
+    // We’ll hook multiplayer into Firebase later.
+  </script>
 
-document.getElementById("settings-btn").onclick = () => {
-  const menu = document.getElementById("settings-menu");
-  menu.style.display = (menu.style.display === "none" || menu.style.display === "") ? "block" : "none";
-};
+  <!-- Game logic -->
+  <script>
+    let score = 0;
+    let highScore = Number(localStorage.getItem("catHighScore") || 0);
+    let gameRunning = false;
+    let bowlSize = 1;
+    let spawnInterval = null;
 
-document.querySelectorAll(".settings-btn[data-bg]").forEach(btn => {
-  btn.addEventListener("click", () => {
-    applyBackground(btn.getAttribute("data-bg"));
-  });
-});
+    const bowl = document.getElementById("bowl");
+    const scoreEl = document.getElementById("score");
+    const startScreen = document.getElementById("start-screen");
+    const gameOverScreen = document.getElementById("game-over");
+    const finalScoreEl = document.getElementById("final-score");
+    const highScoreEl = document.getElementById("high-score");
 
-/* GAME LOGIC BELOW */
+    /* BACKGROUND CHANGER */
+    function applyBackground(theme) {
+      if (theme === "green") {
+        document.body.style.background = "radial-gradient(circle, #001100, #000000)";
+      } else if (theme === "blue") {
+        document.body.style.background = "radial-gradient(circle, #001133, #000011)";
+      } else if (theme === "purple") {
+        document.body.style.background = "radial-gradient(circle, #220022, #000000)";
+      } else if (theme === "red") {
+        document.body.style.background = "radial-gradient(circle, #330000, #000000)";
+      } else if (theme === "matrix") {
+        document.body.style.background = "radial-gradient(circle, #001900, #000000)";
+      } else if (theme === "rainbow") {
+        document.body.style.background = "radial-gradient(circle, #330033, #000000)";
+      }
+    }
 
-function resetBowl() {
-  bowlSize = 1;
-  updateBowlSize();
-  bowl.style.left = (window.innerWidth / 2 - 40) + "px";
-}
+    document.getElementById("settings-btn").onclick = () => {
+      const menu = document.getElementById("settings-menu");
+      menu.style.display =
+        (menu.style.display === "none" || menu.style.display === "") ? "block" : "none";
+    };
 
-function updateBowlSize() {
-  if (bowlSize === 1) bowl.style.width = "80px";
-  if (bowlSize === 2) bowl.style.width = "140px";
-  if (bowlSize === 3) bowl.style.width = "200px";
-}
+    document.querySelectorAll(".settings-btn[data-bg]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        applyBackground(btn.getAttribute("data-bg"));
+      });
+    });
 
-function spawnCat() {
-  if (!gameRunning) return;
+    // Placeholder for future multiplayer buttons
+    document.getElementById("local-mp-btn").onclick = () => {
+      alert("Local multiplayer will be added soon.");
+    };
+    document.getElementById("online-mp-btn").onclick = () => {
+      alert("Online multiplayer (Co-op & Versus) will be wired to Firebase next.");
+    };
 
-  const cat = document.createElement("div");
-  cat.className = "cat";
-  cat.textContent = "🐱";
+    /* GAME LOGIC */
 
-  cat.style.left = Math.random() * (window.innerWidth - 50) + "px";
-  cat.style.top = "-50px";
+    function resetBowl() {
+      bowlSize = 1;
+      updateBowlSize();
+      bowl.style.left = (window.innerWidth / 2 - 40) + "px";
+    }
 
-  document.body.appendChild(cat);
+    function updateBowlSize() {
+      if (bowlSize === 1) bowl.style.width = "80px";
+      if (bowlSize === 2) bowl.style.width = "140px";
+      if (bowlSize === 3) bowl.style.width = "200px";
+    }
 
-  let fallSpeed = 1.5 + Math
+    function spawnCat() {
+      if (!gameRunning) return;
+
+      const cat = document.createElement("div");
+      cat.className = "cat";
+      cat.textContent = "🐱";
+
+      const startX = Math.random() * (window.innerWidth - 50);
+      cat.style.left = startX + "px";
+      cat.style.top = "-60px";
+
+      document.body.appendChild(cat);
+
+      let y = -60;
+      const fallSpeed = 2 + Math.random() * 2; // smoother, slightly faster
+
+      const fallInterval = setInterval(() => {
+        if (!gameRunning) {
+          clearInterval(fallInterval);
+          cat.remove();
+          return;
+        }
+
+        y += fallSpeed;
+        cat.style.top = y + "px";
+
+        const bowlRect = bowl.getBoundingClientRect();
+        const catRect = cat.getBoundingClientRect();
+
+        const inBowl =
+          catRect.bottom >= bowlRect.top &&
+          catRect.left >= bowlRect.left &&
+          catRect.right <= bowlRect.right;
+
+        if (inBowl) {
+          clearInterval(fallInterval);
+          cat.remove();
+          addScore(1);
+        } else if (y > window.innerHeight) {
+          clearInterval(fallInterval);
+          cat.remove();
+          loseLifeOrEnd();
+        }
+      }, 16); // ~60fps
+    }
+
+    function spawnBoost() {
+      if (!gameRunning) return;
+
+      const boost = document.createElement("div");
+      boost.className = "boost";
+      boost.textContent = "+";
+      const startX = Math.random() * (window.innerWidth - 50);
+      boost.style.left = startX + "px";
+      boost.style.top = "-60px";
+      document.body.appendChild(boost);
+
+      let y = -60;
+      const fallSpeed = 2.5;
+
+      const fallInterval = setInterval(() => {
+        if (!gameRunning) {
+          clearInterval(fallInterval);
+          boost.remove();
+          return;
+        }
+
+        y += fallSpeed;
+        boost.style.top = y + "px";
+
+        const bowlRect = bowl.getBoundingClientRect();
+        const boostRect = boost.getBoundingClientRect();
+
+        const inBowl =
+          boostRect.bottom >= bowlRect.top &&
+          boostRect.left >= bowlRect.left &&
+          boostRect.right <= bowlRect.right;
+
+        if (inBowl) {
+          clearInterval(fallInterval);
+          boost.remove();
+          if (bowlSize < 3) {
+            bowlSize++;
+            updateBowlSize();
+          }
+        } else if (y > window.innerHeight) {
+          clearInterval(fallInterval);
+          boost.remove();
+        }
+      }, 16);
+    }
+
+    function spawnShrink() {
+      if (!gameRunning) return;
+
+      const shrink = document.createElement("div");
+      shrink.className = "shrink";
+      shrink.textContent = "-";
+      const startX = Math.random() * (window.innerWidth - 50);
+      shrink.style.left = startX + "px";
+      shrink.style.top = "-60px";
+      document.body.appendChild(shrink);
+
+      let y = -60;
+      const fallSpeed = 2.5;
+
+      const fallInterval = setInterval(() => {
+        if (!gameRunning) {
+          clearInterval(fallInterval);
+          shrink.remove();
+          return;
+        }
+
+        y += fallSpeed;
+        shrink.style.top = y + "px";
+
+        const bowlRect = bowl.getBoundingClientRect();
+        const shrinkRect = shrink.getBoundingClientRect();
+
+        const inBowl =
+          shrinkRect.bottom >= bowlRect.top &&
+          shrinkRect.left >= bowlRect.left &&
+          shrinkRect.right <= bowlRect.right;
+
+        if (inBowl) {
+          clearInterval(fallInterval);
+          shrink.remove();
+          if (bowlSize > 1) {
+            bowlSize--;
+            updateBowlSize();
+          }
+        } else if (y > window.innerHeight) {
+          clearInterval(fallInterval);
+          shrink.remove();
+        }
+      }, 16);
+    }
+
+    function addScore(amount) {
+      score += amount;
+      scoreEl.textContent = "Score: " + score;
+    }
+
+    let misses = 0;
+    function loseLifeOrEnd() {
+      misses++;
+      if (misses >= 3) {
+        endGame();
+      }
+    }
+
+    function startGame() {
+      score = 0;
+      misses = 0;
+      scoreEl.textContent = "Score: 0";
+      gameRunning = true;
+      startScreen.style.display = "none";
+      gameOverScreen.style.display = "none";
+      resetBowl();
+
+      if (spawnInterval) clearInterval(spawnInterval);
+      spawnInterval = setInterval(() => {
+        spawnCat();
+        if (Math.random() < 0.2) spawnBoost();
+        if (Math.random() < 0.15) spawnShrink();
+      }, 900);
+    }
+
+    function endGame() {
+      gameRunning = false;
+      if (spawnInterval) {
+        clearInterval(spawnInterval);
+        spawnInterval = null;
+      }
+
+      finalScoreEl.textContent = "Final Score: " + score;
+
+      if (score > highScore) {
+        highScore = score;
+        localStorage.setItem("catHighScore", String(highScore));
+      }
+
+      highScoreEl.textContent = "High Score: " + highScore;
+      gameOverScreen.style.display = "flex";
+    }
+
+    document.getElementById("play-btn").onclick = () => {
+      startGame();
+    };
+
+    document.getElementById("restart-btn").onclick = () => {
+      startGame();
+    };
+
+    // Bowl movement with mouse
+    document.addEventListener("mousemove", (e) => {
+      const x = e.clientX;
+      const bowlWidth = bowl.getBoundingClientRect().width;
+      const clampedX = Math.max(0, Math.min(window.innerWidth - bowlWidth, x - bowlWidth / 2));
+      bowl.style.left = clampedX + "px";
+    });
+
+    // Initial bowl position
+    window.addEventListener("resize", resetBowl);
+    resetBowl();
+  </script>
+</body>
+</html>
