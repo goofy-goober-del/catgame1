@@ -56,6 +56,44 @@
     text-shadow: 0 0 10px #00ff00;
   }
 
+  #settings-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 10px 20px;
+    font-size: 18px;
+    background: black;
+    border: 2px solid #00ff00;
+    color: #00ff00;
+    cursor: pointer;
+  }
+
+  #settings-menu {
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    width: 260px;
+    background: rgba(0, 20, 0, 0.95);
+    border: 2px solid #00ff00;
+    padding: 10px;
+    display: none;
+    color: #00ff00;
+    font-size: 14px;
+  }
+
+  .settings-btn {
+    display: block;
+    width: 100%;
+    margin: 3px 0;
+    padding: 5px;
+    background: black;
+    border: 1px solid #00ff00;
+    color: #00ff00;
+    cursor: pointer;
+    text-align: left;
+    font-size: 13px;
+  }
+
   #game-over {
     position: absolute;
     width: 100%;
@@ -109,103 +147,6 @@
     border-radius: 50%;
     box-shadow: 0 0 20px #00ff00;
   }
-
-  #settings-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 10px 20px;
-    font-size: 18px;
-    background: black;
-    border: 2px solid #00ff00;
-    color: #00ff00;
-    cursor: pointer;
-  }
-
-  #settings-menu {
-    position: absolute;
-    top: 60px;
-    right: 10px;
-    width: 260px;
-    background: rgba(0, 20, 0, 0.95);
-    border: 2px solid #00ff00;
-    padding: 10px;
-    display: none;
-    color: #00ff00;
-    font-size: 14px;
-  }
-
-  #settings-menu h3 {
-    margin-top: 0;
-    margin-bottom: 8px;
-  }
-
-  .settings-section {
-    margin-bottom: 10px;
-    border-top: 1px solid #004400;
-    padding-top: 6px;
-  }
-
-  .settings-btn {
-    display: block;
-    width: 100%;
-    margin: 3px 0;
-    padding: 5px;
-    background: black;
-    border: 1px solid #00ff00;
-    color: #00ff00;
-    cursor: pointer;
-    text-align: left;
-    font-size: 13px;
-  }
-
-  #name-input {
-    position: absolute;
-    top: 40px;
-    left: 10px;
-    padding: 5px;
-    font-size: 14px;
-    background: black;
-    border: 1px solid #00ff00;
-    color: #00ff00;
-  }
-
-  #player-name-label {
-    position: absolute;
-    top: 20px;
-    left: 10px;
-    font-size: 14px;
-  }
-
-  #code-input {
-    position: absolute;
-    top: 20px;
-    right: 10px;
-    padding: 5px;
-    font-size: 14px;
-    background: black;
-    border: 1px solid #00ff00;
-    color: #00ff00;
-  }
-
-  #code-label {
-    position: absolute;
-    top: 0px;
-    right: 10px;
-    font-size: 14px;
-  }
-
-  #lobby {
-    position: absolute;
-    bottom: 60px;
-    left: 10px;
-    padding: 10px;
-    background: rgba(0, 20, 0, 0.9);
-    border: 1px solid #00ff00;
-    color: #00ff00;
-    font-size: 14px;
-    display: none;
-  }
 </style>
 </head>
 
@@ -218,6 +159,22 @@
 
 <div id="score">Score: 0</div>
 
+<button id="settings-btn">SETTINGS</button>
+
+<div id="settings-menu">
+  <h3>Background Themes</h3>
+  <button class="settings-btn" data-bg="green">Cyber Green</button>
+  <button class="settings-btn" data-bg="blue">Cyber Blue</button>
+  <button class="settings-btn" data-bg="purple">Cyber Purple</button>
+  <button class="settings-btn" data-bg="red">Danger Red</button>
+  <button class="settings-btn" data-bg="matrix">Matrix</button>
+  <button class="settings-btn" data-bg="rainbow">Rainbow</button>
+
+  <h3>Multiplayer</h3>
+  <button class="settings-btn">Local Multiplayer</button>
+  <button class="settings-btn">Online Multiplayer</button>
+</div>
+
 <div id="game-over">
   <h1>GAME OVER</h1>
   <h2 id="final-score"></h2>
@@ -227,39 +184,6 @@
 
 <div id="bowl"></div>
 
-<div id="player-name-label">Name:</div>
-<input id="name-input" type="text" placeholder="Enter your name">
-
-<div id="code-label">Enter code:</div>
-<input id="code-input" type="text" placeholder="Game code">
-
-<button id="settings-btn">SETTINGS / MULTIPLAYER</button>
-<div id="settings-menu">
-  <h3>Background Themes</h3>
-  <div class="settings-section" id="bg-section">
-    <button class="settings-btn" data-bg="green">Cyber Green</button>
-    <button class="settings-btn" data-bg="blue">Cyber Blue</button>
-    <button class="settings-btn" data-bg="purple">Cyber Purple</button>
-    <button class="settings-btn" data-bg="red">Danger Red</button>
-    <button class="settings-btn" data-bg="matrix">Matrix</button>
-    <button class="settings-btn" data-bg="rainbow">Rainbow</button>
-  </div>
-
-  <h3>Multiplayer</h3>
-  <div class="settings-section" id="mp-section">
-    <button class="settings-btn" id="local-mp-btn">Local Multiplayer</button>
-    <button class="settings-btn" id="online-host-btn">Online: Host Game</button>
-    <button class="settings-btn" id="online-join-btn">Online: Join Game</button>
-    <button class="settings-btn" id="online-match-btn">Online: Play Random</button>
-  </div>
-</div>
-
-<div id="lobby">
-  <div><strong>Lobby</strong></div>
-  <div id="lobby-info"></div>
-  <button id="lobby-start-btn">Start Game (Host)</button>
-</div>
-
 <script>
 let score = 0;
 let highScore = localStorage.getItem("catHighScore") || 0;
@@ -267,13 +191,9 @@ let gameRunning = false;
 let bowlSize = 1;
 let bowl = document.getElementById("bowl");
 let spawnInterval;
-let currentBg = "green";
-let playerName = "";
-let gameCode = "";
-let isHost = false;
 
+/* BACKGROUND CHANGER */
 function applyBackground(theme) {
-  currentBg = theme;
   if (theme === "green") {
     document.body.style.background = "radial-gradient(circle, #001100, #000000)";
   } else if (theme === "blue") {
@@ -289,7 +209,18 @@ function applyBackground(theme) {
   }
 }
 
-applyBackground("green");
+document.getElementById("settings-btn").onclick = () => {
+  const menu = document.getElementById("settings-menu");
+  menu.style.display = (menu.style.display === "none" || menu.style.display === "") ? "block" : "none";
+};
+
+document.querySelectorAll(".settings-btn[data-bg]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    applyBackground(btn.getAttribute("data-bg"));
+  });
+});
+
+/* GAME LOGIC BELOW */
 
 function resetBowl() {
   bowlSize = 1;
@@ -315,254 +246,4 @@ function spawnCat() {
 
   document.body.appendChild(cat);
 
-  let fallSpeed = 1.5 + Math.random() * 2;
-
-  function fall() {
-    if (!gameRunning) return;
-
-    let y = parseFloat(cat.style.top);
-    y += fallSpeed;
-    cat.style.top = y + "px";
-
-    let bowlRect = bowl.getBoundingClientRect();
-    let catRect = cat.getBoundingClientRect();
-
-    if (
-      catRect.bottom >= bowlRect.top &&
-      catRect.left < bowlRect.right &&
-      catRect.right > bowlRect.left
-    ) {
-      score++;
-      document.getElementById("score").textContent = "Score: " + score;
-      cat.remove();
-      return;
-    }
-
-    if (y > window.innerHeight - 50) {
-      endGame();
-      cat.remove();
-      return;
-    }
-
-    requestAnimationFrame(fall);
-  }
-
-  fall();
-}
-
-function spawnBoost() {
-  if (!gameRunning) return;
-
-  const boost = document.createElement("div");
-  boost.className = "boost";
-  boost.textContent = "🟢";
-
-  boost.style.left = Math.random() * (window.innerWidth - 50) + "px";
-  boost.style.top = "-50px";
-
-  document.body.appendChild(boost);
-
-  let fallSpeed = 2;
-
-  function fall() {
-    if (!gameRunning) return;
-
-    let y = parseFloat(boost.style.top);
-    y += fallSpeed;
-    boost.style.top = y + "px";
-
-    let bowlRect = bowl.getBoundingClientRect();
-    let boostRect = boost.getBoundingClientRect();
-
-    if (
-      boostRect.bottom >= bowlRect.top &&
-      boostRect.left < bowlRect.right &&
-      boostRect.right > bowlRect.left
-    ) {
-      if (bowlSize < 3) bowlSize++;
-      updateBowlSize();
-      boost.remove();
-      return;
-    }
-
-    if (y > window.innerHeight - 50) {
-      boost.remove();
-      return;
-    }
-
-    requestAnimationFrame(fall);
-  }
-
-  fall();
-}
-
-function spawnShrink() {
-  if (!gameRunning) return;
-
-  const shrink = document.createElement("div");
-  shrink.className = "shrink";
-  shrink.textContent = "🔴";
-
-  shrink.style.left = Math.random() * (window.innerWidth - 50) + "px";
-  shrink.style.top = "-50px";
-
-  document.body.appendChild(shrink);
-
-  let fallSpeed = 2;
-
-  function fall() {
-    if (!gameRunning) return;
-
-    let y = parseFloat(shrink.style.top);
-    y += fallSpeed;
-    shrink.style.top = y + "px";
-
-    let bowlRect = bowl.getBoundingClientRect();
-    let shrinkRect = shrink.getBoundingClientRect();
-
-    if (
-      shrinkRect.bottom >= bowlRect.top &&
-      shrinkRect.left < bowlRect.right &&
-      shrinkRect.right > bowlRect.left
-    ) {
-      if (bowlSize > 1) bowlSize--;
-      updateBowlSize();
-      shrink.remove();
-      return;
-    }
-
-    if (y > window.innerHeight - 50) {
-      shrink.remove();
-      return;
-    }
-
-    requestAnimationFrame(fall);
-  }
-
-  fall();
-}
-
-function startGame() {
-  score = 0;
-  gameRunning = true;
-  document.getElementById("score").textContent = "Score: 0";
-  document.getElementById("start-screen").style.display = "none";
-  document.getElementById("game-over").style.display = "none";
-
-  resetBowl();
-
-  spawnInterval = setInterval(() => {
-    spawnCat();
-    if (Math.random() < 0.3) spawnBoost();
-    if (Math.random() < 0.2) spawnShrink();
-  }, 900);
-}
-
-function endGame() {
-  gameRunning = false;
-  clearInterval(spawnInterval);
-
-  document.querySelectorAll(".cat, .boost, .shrink").forEach(e => e.remove());
-
-  if (score > highScore) {
-    highScore = score;
-    localStorage.setItem("catHighScore", highScore);
-  }
-
-  document.getElementById("final-score").textContent = "Your Score: " + score;
-  document.getElementById("high-score").textContent = "High Score: " + highScore;
-  document.getElementById("game-over").style.display = "flex";
-}
-
-document.getElementById("play-btn").onclick = startGame;
-document.getElementById("restart-btn").onclick = () => {
-  document.getElementById("start-screen").style.display = "flex";
-  document.getElementById("game-over").style.display = "none";
-};
-
-document.addEventListener("mousemove", (e) => {
-  bowl.style.left = (e.clientX - bowl.offsetWidth / 2) + "px";
-});
-
-document.addEventListener("touchmove", (e) => {
-  let x = e.touches[0].clientX;
-  bowl.style.left = (x - bowl.offsetWidth / 2) + "px";
-});
-
-document.addEventListener("keydown", (e) => {
-  let left = parseFloat(bowl.style.left);
-  if (e.key === "ArrowLeft") bowl.style.left = (left - 20) + "px";
-  if (e.key === "ArrowRight") bowl.style.left = (left + 20) + "px";
-});
-
-/* SETTINGS / MULTIPLAYER UI */
-
-document.getElementById("settings-btn").onclick = () => {
-  const menu = document.getElementById("settings-menu");
-  menu.style.display = (menu.style.display === "none" || menu.style.display === "") ? "block" : "none";
-};
-
-document.querySelectorAll("#bg-section .settings-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const theme = btn.getAttribute("data-bg");
-    applyBackground(theme);
-  });
-});
-
-document.getElementById("name-input").addEventListener("input", (e) => {
-  playerName = e.target.value;
-});
-
-document.getElementById("code-input").addEventListener("input", (e) => {
-  gameCode = e.target.value;
-});
-
-document.getElementById("local-mp-btn").onclick = () => {
-  alert("Local multiplayer: second player uses arrow keys. (Full local mode can be added next.)");
-};
-
-document.getElementById("online-host-btn").onclick = () => {
-  if (!playerName) {
-    alert("Enter your name first (top left).");
-    return;
-  }
-  isHost = true;
-  const lobby = document.getElementById("lobby");
-  lobby.style.display = "block";
-  document.getElementById("lobby-info").textContent =
-    "Host: " + playerName + "\nGame code: (Firebase code will go here)";
-};
-
-document.getElementById("online-join-btn").onclick = () => {
-  if (!playerName) {
-    alert("Enter your name first (top left).");
-    return;
-  }
-  if (!gameCode) {
-    alert("Enter a game code (top right).");
-    return;
-  }
-  alert("Joining game with code: " + gameCode + " (Firebase join logic will go here).");
-};
-
-document.getElementById("online-match-btn").onclick = () => {
-  if (!playerName) {
-    alert("Enter your name first (top left).");
-    return;
-  }
-  alert("Searching for random online match... (Firebase matchmaking will go here).");
-};
-
-document.getElementById("lobby-start-btn").onclick = () => {
-  if (!isHost) {
-    alert("Only the host can start the game.");
-    return;
-  }
-  alert("Starting multiplayer game... (Firebase start logic will go here).");
-  document.getElementById("lobby").style.display = "none";
-  startGame();
-};
-</script>
-
-</body>
-</html>
+  let fallSpeed = 1.5 + Math
